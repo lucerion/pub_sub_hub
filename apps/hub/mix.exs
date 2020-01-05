@@ -17,11 +17,14 @@ defmodule PubSubHub.Hub.MixProject do
 
   def application do
     [
+      mod: {PubSubHub.Hub.Application, []},
       extra_applications: [:logger]
     ]
   end
 
   defp deps do
-    []
+    [
+      {:plug_cowboy, "~> 2.1"}
+    ]
   end
 end

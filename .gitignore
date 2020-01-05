@@ -24,3 +24,5 @@ hub-*.tar
 observer-*.tar
 publisher-*.tar
 subscriber-*.tar
+
+.env
