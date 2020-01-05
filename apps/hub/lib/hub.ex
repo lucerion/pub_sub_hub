@@ -3,8 +3,8 @@ defmodule PubSubHub.Hub do
 
   @doc "Subscribe to a channel"
   @spec subscribe(String.t(), String.t()) :: {:ok, nil}
-  def subscribe(channel, callback), do: {:ok, nil}
+  def subscribe(subscriber, channel, callback), do: {:ok, nil}
 
   @doc "Unsubscriber from a channel"
-  def unsubscribe(channel), do: {:ok, nil}
+  def unsubscribe(subscriber, channel), do: {:ok, nil}
 end

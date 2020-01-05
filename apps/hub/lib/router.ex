@@ -11,18 +11,22 @@ defmodule PubSubHub.Hub.Router do
   plug(:match)
   plug(:dispatch)
 
-  post "/subscribe" do
-    with %{"channel" => channel, "callback" => callback} <- conn.body_params,
-         {:ok, _} <- Hub.subscribe(channel, callback) do
+  post "/subscription" do
+    with %{"token" => token, "channel_url" => channel_url, "callback_url" => callback_url} <- conn.body_params,
+         {:ok, subscriber} <- subscriber(token),
+         {:ok, channel} <- channel(channel_url),
+         {:ok, _} <- Hub.subscribe(subscriber, channel, callback_url) do
       send_response(conn, :ok)
     else
       _ -> send_response(conn, :unprocessable_entity)
     end
   end
 
-  post "/unsubscribe" do
-    with %{"channel" => channel} <- conn.body_params,
-         {:ok, _} <- Hub.unsubscribe(channel) do
+  delete "/subscription" do
+    with %{"token" => token, "channel_url" => "channel_url"} <- conn.body_params,
+         {:ok, subscriber} <- subscriber(token),
+         {:ok, channel} <- channel(channel_url),
+         {:ok, _} <- Hub.unsubscribe(subscriber, channel) do
       send_response(conn, :ok)
     else
       _ -> send_response(conn, :unprocessable_entity)
@@ -39,4 +43,8 @@ defmodule PubSubHub.Hub.Router do
 
     send_resp(conn, status_code, reason_phrase)
   end
+
+  defp subscriber(token), do: {:ok, nil}
+
+  defp channel(channel_url), do: {:ok, nil}
 end
