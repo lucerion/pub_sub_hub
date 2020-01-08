@@ -23,7 +23,7 @@ defmodule PubSubHub.Hub.Router do
   end
 
   delete "/subscription" do
-    with %{"token" => token, "channel_url" => "channel_url"} <- conn.body_params,
+    with %{"token" => token, "channel_url" => channel_url} <- conn.body_params,
          {:ok, subscriber} <- subscriber(token),
          {:ok, channel} <- channel(channel_url),
          {:ok, _} <- Hub.unsubscribe(subscriber, channel) do

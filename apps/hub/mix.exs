@@ -24,6 +24,8 @@ defmodule PubSubHub.Hub.MixProject do
 
   defp deps do
     [
+      {:ecto_sql, "~> 3.3.2"},
+      {:postgrex, "~> 0.15.3"},
       {:plug_cowboy, "~> 2.1"}
     ]
   end
