@@ -1,3 +1,3 @@
 # PubSubHub
 
-Deliver content with publish/subscribe pattern. Inspired by WebSub.
+Proof of concept. Deliver content with pub/sub mechanism. Inspired by WebSub.
