@@ -11,6 +11,9 @@ defmodule PubSubHub.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:dialyxir, "~> 0.5.1"},
+      {:credo, "~> 1.1"}
+    ]
   end
 end
