@@ -1,11 +1,11 @@
-defmodule PubSubHub.Hub.Channel do
+defmodule PubSubHub.Hub.Channels.Channel do
   @moduledoc "Channel model"
 
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Publisher, Subscription}
+  alias PubSubHub.Hub.{Publishers.Publisher, Subscriptions.Subscription}
 
   @type t :: %__MODULE__{
           url: String.t(),

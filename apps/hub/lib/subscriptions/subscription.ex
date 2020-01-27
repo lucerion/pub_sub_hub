@@ -1,11 +1,11 @@
-defmodule PubSubHub.Hub.Subscription do
+defmodule PubSubHub.Hub.Subscriptions.Subscription do
   @moduledoc "Subscription model"
 
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Subscriber, Channel}
+  alias PubSubHub.Hub.{Subscribers.Subscriber, Channels.Channel}
 
   @type t :: %__MODULE__{
           subscriber_id: integer,

@@ -1,7 +1,7 @@
-defmodule PubSubHub.Channels do
+defmodule PubSubHub.Hub.Channels do
   @moduledoc "Channels related business logic"
 
-  alias PubSubHub.Hub.Channel
+  alias PubSubHub.Hub.Channels.Channel
 
   @doc "Fetches channel by url"
   @spec find_by_url(String.t()) :: Channel.t() | nil

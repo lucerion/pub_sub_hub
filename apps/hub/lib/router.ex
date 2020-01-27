@@ -4,7 +4,8 @@ defmodule PubSubHub.Hub.Router do
   use Plug.Router
 
   alias Plug.Conn.Status
-  alias PubSubHub.{Hub, Subscribers, Channels}
+  alias PubSubHub.Hub
+  alias PubSubHub.Hub.{Subscribers, Channels}
 
   plug(Plug.Parsers, parsers: [:urlencoded])
 
