@@ -4,7 +4,7 @@ defmodule PubSubHub.Hub.Router do
   use Plug.Router
 
   alias Plug.Conn.Status
-  alias PubSubHub.Hub
+  alias PubSubHub.{Hub, Subscribers, Channels}
 
   plug(Plug.Parsers, parsers: [:urlencoded])
 
@@ -13,8 +13,8 @@ defmodule PubSubHub.Hub.Router do
 
   post "/subscription" do
     with %{"token" => token, "channel_url" => channel_url, "callback_url" => callback_url} <- conn.body_params,
-         {:ok, subscriber} <- subscriber(token),
-         {:ok, channel} <- channel(channel_url),
+         subscriber when not is_nil(subscriber) <- Subscribers.find_by_token(token),
+         channel when not is_nil(channel) <- Channels.find_by_url(channel_url),
          {:ok, _} <- Hub.subscribe(subscriber, channel, callback_url) do
       send_response(conn, :ok)
     else
@@ -24,8 +24,8 @@ defmodule PubSubHub.Hub.Router do
 
   delete "/subscription" do
     with %{"token" => token, "channel_url" => channel_url} <- conn.body_params,
-         {:ok, subscriber} <- subscriber(token),
-         {:ok, channel} <- channel(channel_url),
+         subscriber when not is_nil(subscriber) <- Subscribers.find_by_token(token),
+         channel when not is_nil(channel) <- Channels.find_by_url(channel_url),
          {:ok, _} <- Hub.unsubscribe(subscriber, channel) do
       send_response(conn, :ok)
     else
@@ -43,8 +43,4 @@ defmodule PubSubHub.Hub.Router do
 
     send_resp(conn, status_code, reason_phrase)
   end
-
-  defp subscriber(token), do: {:ok, nil}
-
-  defp channel(channel_url), do: {:ok, nil}
 end
