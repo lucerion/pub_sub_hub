@@ -1,3 +1,3 @@
 defmodule PubSubHub.Subscriber do
-  @moduledoc "Consume content from the Subscriber"
+  @moduledoc "Service that consumes channels data"
 end

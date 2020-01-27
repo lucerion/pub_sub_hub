@@ -1,5 +1,7 @@
 defmodule PubSubHub.Hub do
-  @moduledoc "Push updates to Subscribers"
+  @moduledoc """
+  Service that subscribes/unsubscribes Subscribers to Publisher channels and sends Publishers data to the Subscribers
+  """
 
   @doc "Subscribe to a channel"
   def subscribe(subscriber, channel, callback_url), do: {:ok, nil}

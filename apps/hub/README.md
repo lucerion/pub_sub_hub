@@ -1,3 +1,3 @@
 # Hub
 
-Push updates to Subscribers
+Service that subscribes/unsubscribes Subscribers to Publisher channels and sends Publishers data to the Subscribers

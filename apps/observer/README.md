@@ -1,3 +1,3 @@
 # Observer
 
-Observe new changes of a Resource
+Service that observes a resource changes

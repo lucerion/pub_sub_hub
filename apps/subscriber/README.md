@@ -1,3 +1,3 @@
 # Subscriber
 
-Consume content from the Subscriber
+Service that consumes channels data

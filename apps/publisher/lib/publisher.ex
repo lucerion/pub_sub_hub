@@ -1,3 +1,3 @@
 defmodule PubSubHub.Publisher do
-  @moduledoc "Publish new content to the Hub"
+  @moduledoc "Service that sends channels data to the Hub"
 end
