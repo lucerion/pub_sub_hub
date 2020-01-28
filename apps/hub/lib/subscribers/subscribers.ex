@@ -8,6 +8,7 @@ defmodule PubSubHub.Hub.Subscribers do
   def find_by_token(_token), do: %Subscriber{}
 
   @doc "Creates a subscriber"
+  @spec create(map) :: {:ok, Subscriber.t()} | {:error, Ecto.Changeset.t()}
   def create(attributes) do
     %Subscriber{}
     |> Subscriber.create_changeset(attributes)

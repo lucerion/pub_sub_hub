@@ -1,16 +1,13 @@
 defmodule PubSubHub.Hub.Secret do
   @moduledoc "Secret keys functions"
 
-  @default_secret_key_length 16
+  @doc "Hashes a secret key"
+  @spec hash_secret(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def hash_secret(%Ecto.Changeset{valid?: false} = changeset), do: changeset
 
-  @doc "Generates random secret key"
-  @spec generate(integer) :: String.t()
-  def generate(length) do
-    length
-    |> :crypto.strong_rand_bytes()
-    |> Base.encode64
-    |> binary_part(0, length)
+  def hash_secret(%Ecto.Changeset{changes: %{secret: secret}} = changeset) do
+    changeset
+    |> Ecto.Changeset.put_change(:secret_hash, Bcrypt.hash_pwd_salt(secret))
+    |> Ecto.Changeset.put_change(:secret, nil)
   end
-
-  def generate, do: generate(@default_secret_key_length)
 end

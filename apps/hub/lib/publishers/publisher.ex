@@ -5,7 +5,7 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.Channels.Channel
+  alias PubSubHub.Hub.{Channels.Channel, Secret}
 
   @type t :: %__MODULE__{
           email: String.t(),
@@ -36,6 +36,7 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
     |> cast(attributes, @create_allowed_attributes)
     |> validate_required(@create_required_attributes)
     |> unique_constraint(:email)
+    |> Secret.hash_secret()
   end
 
   @spec update_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
