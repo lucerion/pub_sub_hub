@@ -9,7 +9,6 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
 
   @type t :: %__MODULE__{
           secret_hash: String.t(),
-          secret_salt: String.t(),
           token: String.t()
         }
 
@@ -22,7 +21,6 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
   schema "publishers" do
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
-    field(:secret_salt, :string)
     field(:token, :string)
 
     has_many(:channels, Channel, on_delete: :delete_all)

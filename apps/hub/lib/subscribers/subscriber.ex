@@ -9,7 +9,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
 
   @type t :: %__MODULE__{
           secret_hash: String.t(),
-          secret_salt: String.t(),
           token: String.t()
         }
 
@@ -22,7 +21,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   schema "subscribers" do
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
-    field(:secret_salt, :string)
     field(:token, :string)
 
     has_many(:subscriptions, Subscription, on_delete: :delete_all)

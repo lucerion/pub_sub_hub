@@ -10,7 +10,6 @@ defmodule PubSubHub.Hub.Channels.Channel do
   @type t :: %__MODULE__{
           url: String.t(),
           secret_hash: String.t(),
-          secret_salt: String.t(),
           publisher_id: integer
         }
 
@@ -21,7 +20,6 @@ defmodule PubSubHub.Hub.Channels.Channel do
     field(:url, :string)
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
-    field(:secret_salt, :string)
 
     belongs_to(:publisher, Publisher)
     has_many(:subscriptions, Subscription, on_delete: :delete_all)
