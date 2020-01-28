@@ -36,6 +36,7 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
     |> cast(attributes, @create_allowed_attributes)
     |> validate_required(@create_required_attributes)
     |> unique_constraint(:email)
+    |> hash_secret()
   end
 
   @spec update_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
@@ -44,5 +45,13 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
     |> cast(attributes, @update_allowed_attributes)
     |> validate_required(@update_required_attributes)
     |> unique_constraint(:email)
+  end
+
+  defp hash_secret(%Ecto.Changeset{valid?: false} = changeset), do: changeset
+
+  defp hash_secret(%Ecto.Changeset{changes: %{secret: secret}} = changeset) do
+    changeset
+    |> put_change(:secret_hash, Bcrypt.hash_pwd_salt(secret))
+    |> put_change(:secret, nil)
   end
 end

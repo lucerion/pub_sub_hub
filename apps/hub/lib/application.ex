@@ -7,6 +7,7 @@ defmodule PubSubHub.Hub.Application do
     import Supervisor.Spec
 
     children = [
+      worker(PubSubHub.Hub.Repo, []),
       {Plug.Cowboy, scheme: :http, plug: PubSubHub.Hub.Router, options: [port: Application.get_env(:hub, :port)]}
     ]
 
