@@ -8,17 +8,19 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   alias PubSubHub.Hub.Subscriptions.Subscription
 
   @type t :: %__MODULE__{
+          email: String.t(),
           secret_hash: String.t(),
           token: String.t()
         }
 
-  @create_allowed_attributes ~w[secret]a
-  @create_required_attributes ~w[secret]a
+  @create_allowed_attributes ~w[email secret]a
+  @create_required_attributes ~w[email secret]a
 
-  @update_allowed_attributes ~w[token]a
-  @update_required_attributes ~w[token]a
+  @update_allowed_attributes ~w[email token]a
+  @update_required_attributes ~w[email token]a
 
   schema "subscribers" do
+    field(:email, :string)
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
     field(:token, :string)
@@ -33,6 +35,7 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
     subscriber
     |> cast(attributes, @create_allowed_attributes)
     |> validate_required(@create_required_attributes)
+    |> unique_constraint(:email)
   end
 
   @spec update_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
@@ -40,5 +43,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
     subscriber
     |> cast(attributes, @update_allowed_attributes)
     |> validate_required(@update_required_attributes)
+    |> unique_constraint(:email)
   end
 end

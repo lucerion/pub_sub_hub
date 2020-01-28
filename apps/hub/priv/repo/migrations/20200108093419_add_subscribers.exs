@@ -3,10 +3,13 @@ defmodule PubSubHub.Hub.Repo.Migrations.AddSubscribers do
 
   def change do
     create table(:subscribers) do
-      add :secret_hash, :string
+      add :email,       :string, null: false
+      add :secret_hash, :string, null: false
       add :token,       :string
 
       timestamps()
     end
+
+    create unique_index(:subscribers, [:email])
   end
 end
