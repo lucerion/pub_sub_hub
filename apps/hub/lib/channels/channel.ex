@@ -32,5 +32,6 @@ defmodule PubSubHub.Hub.Channels.Channel do
     channel
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)
+    |> unique_constraint(:url, name: :channels_url_publisher_id_index)
   end
 end

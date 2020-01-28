@@ -8,5 +8,7 @@ defmodule PubSubHub.Hub.Repo.Migrations.AddSubscriptions do
 
       timestamps()
     end
+
+    create unique_index(:subscriptions, [:subscriber_id, :channel_id])
   end
 end

@@ -10,5 +10,7 @@ defmodule PubSubHub.Hub.Repo.Migrations.AddChannels do
 
       timestamps()
     end
+
+    create unique_index(:channels, [:url, :publisher_id])
   end
 end

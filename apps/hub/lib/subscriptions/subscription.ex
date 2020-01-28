@@ -27,5 +27,6 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
     subscription
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)
+    |> unique_constraint(:subscriber_id, name: :subscriptions_subscriber_id_channel_id)
   end
 end
