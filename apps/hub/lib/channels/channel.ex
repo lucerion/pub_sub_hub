@@ -5,7 +5,7 @@ defmodule PubSubHub.Hub.Channels.Channel do
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Publishers.Publisher, Subscriptions.Subscription}
+  alias PubSubHub.Hub.{Publishers.Publisher, Subscriptions.Subscription, Secret}
 
   @type t :: %__MODULE__{
           url: String.t(),
@@ -33,5 +33,6 @@ defmodule PubSubHub.Hub.Channels.Channel do
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)
     |> unique_constraint(:url, name: :channels_url_publisher_id_index)
+    |> Secret.hash_secret()
   end
 end
