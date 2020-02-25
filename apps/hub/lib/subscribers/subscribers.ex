@@ -4,7 +4,7 @@ defmodule PubSubHub.Hub.Subscribers do
   alias PubSubHub.Hub.{Subscribers.Subscriber, Repo}
 
   @doc "Fetches subscriber by token"
-  @spec find_by_token(String.t()) :: Subscriber.t() | nil
+  # @spec find_by_token(String.t()) :: Subscriber.t() | nil
   def find_by_token(_token), do: %Subscriber{}
 
   @doc "Creates a subscriber"
