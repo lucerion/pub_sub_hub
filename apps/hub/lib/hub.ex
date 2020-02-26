@@ -13,7 +13,7 @@ defmodule PubSubHub.Hub do
   @doc "Subscribe to a channel"
   @spec subscribe(%Subscriber{id: Subscriber.id() | nil}, %Channel{id: Channel.id() | nil}, String.t()) ::
           {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
-  def subscribe(%Subscriber{id: subscriber_id}, %Channel{id: channel_id} = channel, callback_url),
+  def subscribe(%Subscriber{id: subscriber_id}, %Channel{id: channel_id}, callback_url),
     do: Subscriptions.create(%{subscriber_id: subscriber_id, channel_id: channel_id, callback_url: callback_url})
 
   @doc "Unsubscriber from a channel"

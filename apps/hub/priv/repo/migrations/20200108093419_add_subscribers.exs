@@ -10,6 +10,6 @@ defmodule PubSubHub.Hub.Repo.Migrations.AddSubscribers do
       timestamps()
     end
 
-    create unique_index(:subscribers, [:email])
+    create unique_index(:subscribers, :email)
   end
 end
