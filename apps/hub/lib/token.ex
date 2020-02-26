@@ -6,7 +6,7 @@ defmodule PubSubHub.Hub.Token do
   @spec refresh(struct) :: {:ok, String.t()} | {:error, nil}
   def refresh(entity) do
     entity
-    |> entity.__struct__.update_changeset(token: Bcrypt.gen_salt())
+    |> entity.__struct__.update_changeset(%{token: Bcrypt.gen_salt()})
     |> Repo.insert()
     |> extract_token()
   end
