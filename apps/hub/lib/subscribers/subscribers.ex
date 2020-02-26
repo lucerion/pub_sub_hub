@@ -1,10 +1,23 @@
 defmodule PubSubHub.Hub.Subscribers do
   @moduledoc "Subscribers related business logic"
 
+  import Ecto.Query
+
   alias PubSubHub.Hub.{Subscribers.Subscriber, Repo}
 
-  @doc "Fetches subscriber by token"
-  def find_by_token(_token), do: %Subscriber{}
+  @doc "Fetches subscriber by criteria"
+  @spec find_by(map) :: Subscriber.t() | nil
+  def find_by(%{token: token}) do
+    Subscriber
+    |> where(token: ^token)
+    |> Repo.one()
+  end
+
+  def find_by(%{email: email}) do
+    Subscriber
+    |> where(email: ^email)
+    |> Repo.one()
+  end
 
   @doc "Creates a subscriber"
   @spec create(Subscriber.create_attributes()) :: {:ok, Subscriber.t()} | {:error, Ecto.Changeset.t()}

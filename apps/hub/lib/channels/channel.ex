@@ -16,10 +16,10 @@ defmodule PubSubHub.Hub.Channels.Channel do
   @type id :: String.t() | integer
 
   @type attributes :: %{
-    url: String.t(),
-    secret: String.t(),
-    publisher_id: Publisher.id() | nil
-  }
+          url: String.t(),
+          secret: String.t(),
+          publisher_id: Publisher.id() | nil
+        }
 
   @allowed_attributes ~w[secret url publisher_id]a
   @required_attributes ~w[secret url publisher_id]a

@@ -3,11 +3,12 @@ defmodule PubSubHub.Hub.Router do
 
   use PubSubHub.Hub.API.Endpoint
 
-  alias PubSubHub.Hub.API.{ChannelEndpoint, SubscriptionEndpoint}
+  alias PubSubHub.Hub.API.{ChannelEndpoint, SubscriptionEndpoint, SubscriberEndpoint}
 
   plug(Plug.Parsers, parsers: [:urlencoded])
 
   forward("/channel", to: ChannelEndpoint)
+  forward("/subscriber", to: SubscriberEndpoint)
   forward("/subscription", to: SubscriptionEndpoint)
 
   match _ do
