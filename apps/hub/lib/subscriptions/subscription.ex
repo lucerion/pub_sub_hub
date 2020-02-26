@@ -12,21 +12,23 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
           channel_id: integer
         }
 
-  @allowed_attributes ~w[subscriber_id channel_id]a
-  @required_attributes ~w[subscriber_id channel_id]a
+  @create_allowed_attributes ~w[callback_url subscriber_id channel_id]a
+  @create_required_attributes ~w[callback_url subscriber_id channel_id]a
 
   schema "subscriptions" do
+    field(:callback_url, :string)
+
     belongs_to(:subscriber, Subscriber)
     belongs_to(:channel, Channel)
 
     timestamps()
   end
 
-  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
-  def changeset(%__MODULE__{} = subscription, attributes \\ %{}) do
+  @spec create_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
+  def create_changeset(%__MODULE__{} = subscription, attributes \\ %{}) do
     subscription
-    |> cast(attributes, @allowed_attributes)
-    |> validate_required(@required_attributes)
+    |> cast(attributes, @create_allowed_attributes)
+    |> validate_required(@create_required_attributes)
     |> unique_constraint(:subscriber_id, name: :subscriptions_subscriber_id_channel_id)
   end
 end
