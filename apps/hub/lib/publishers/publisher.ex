@@ -13,6 +13,18 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
           token: String.t()
         }
 
+  @type id :: String.t() | integer
+
+  @type create_attributes :: %{
+          email: String.t(),
+          secret: String.t()
+        }
+
+  @type update_attributes :: %{
+          email: String.t(),
+          token: String.t()
+        }
+
   @create_allowed_attributes ~w[email secret]a
   @create_required_attributes ~w[email secret]a
 
@@ -30,8 +42,8 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
     timestamps()
   end
 
-  @spec create_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
-  def create_changeset(%__MODULE__{} = publisher, attributes \\ %{}) do
+  @spec create_changeset(%__MODULE__{}, create_attributes) :: Ecto.Changeset.t()
+  def create_changeset(%__MODULE__{} = publisher, attributes) do
     publisher
     |> cast(attributes, @create_allowed_attributes)
     |> validate_required(@create_required_attributes)
@@ -39,8 +51,8 @@ defmodule PubSubHub.Hub.Publishers.Publisher do
     |> Secret.hash_secret()
   end
 
-  @spec update_changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
-  def update_changeset(%__MODULE__{} = publisher, attributes \\ %{}) do
+  @spec update_changeset(%__MODULE__{}, update_attributes) :: Ecto.Changeset.t()
+  def update_changeset(%__MODULE__{} = publisher, attributes) do
     publisher
     |> cast(attributes, @update_allowed_attributes)
     |> unique_constraint(:email)

@@ -4,7 +4,7 @@ defmodule PubSubHub.Hub.Subscriptions do
   alias PubSubHub.Hub.{Subscriptions.Subscription, Repo}
 
   @doc "Creates a subscription"
-  @spec create(map) :: {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(Subscription.create_attributes()) :: {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
   def create(attributes) do
     %Subscription{}
     |> Subscription.create_changeset(attributes)

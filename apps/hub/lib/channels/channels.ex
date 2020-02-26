@@ -21,7 +21,7 @@ defmodule PubSubHub.Hub.Channels do
   end
 
   @doc "Creates a channel"
-  @spec create(map) :: {:ok, Channel.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(Channel.attributes()) :: {:ok, Channel.t()} | {:error, Ecto.Changeset.t()}
   def create(attributes) do
     %Channel{}
     |> Channel.changeset(attributes)

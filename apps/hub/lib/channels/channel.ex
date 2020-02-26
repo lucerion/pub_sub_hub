@@ -13,6 +13,14 @@ defmodule PubSubHub.Hub.Channels.Channel do
           publisher_id: integer
         }
 
+  @type id :: String.t() | integer
+
+  @type attributes :: %{
+    url: String.t(),
+    secret: String.t(),
+    publisher_id: Publisher.id() | nil
+  }
+
   @allowed_attributes ~w[secret url publisher_id]a
   @required_attributes ~w[secret url publisher_id]a
 
@@ -27,8 +35,8 @@ defmodule PubSubHub.Hub.Channels.Channel do
     timestamps()
   end
 
-  @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
-  def changeset(%__MODULE__{} = channel, attributes \\ %{}) do
+  @spec changeset(%__MODULE__{}, attributes) :: Ecto.Changeset.t()
+  def changeset(%__MODULE__{} = channel, attributes) do
     channel
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)

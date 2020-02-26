@@ -8,8 +8,15 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
   alias PubSubHub.Hub.{Subscribers.Subscriber, Channels.Channel}
 
   @type t :: %__MODULE__{
+          callback_url: String.t(),
           subscriber_id: integer,
           channel_id: integer
+        }
+
+  @type create_attributes :: %{
+          callback_url: String.t(),
+          subscriber_id: Subscriber.id() | nil,
+          channel_id: Channel.id() | nil
         }
 
   @create_allowed_attributes ~w[callback_url subscriber_id channel_id]a
