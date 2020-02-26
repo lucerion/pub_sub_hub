@@ -5,8 +5,6 @@ defmodule PubSubHub.Hub.Router do
 
   alias PubSubHub.Hub.API.{PublisherEndpoint, ChannelEndpoint, SubscriberEndpoint, SubscriptionEndpoint}
 
-  plug(Plug.Parsers, parsers: [:urlencoded])
-
   forward("/publisher", to: PublisherEndpoint)
   forward("/channel", to: ChannelEndpoint)
   forward("/subscriber", to: SubscriberEndpoint)

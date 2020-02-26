@@ -7,6 +7,8 @@ defmodule PubSubHub.Hub.API.Endpoint do
 
       alias Plug.Conn.Status
 
+      plug(Plug.Parsers, parsers: [:urlencoded])
+
       plug(:match)
       plug(:dispatch)
 
