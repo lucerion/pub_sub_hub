@@ -29,7 +29,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   @create_required_attributes ~w[email secret]a
 
   @update_allowed_attributes ~w[email token]a
-  @update_required_attributes ~w[email token]a
 
   schema "subscribers" do
     field(:email, :string)
@@ -55,7 +54,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   def update_changeset(%__MODULE__{} = subscriber, attributes) do
     subscriber
     |> cast(attributes, @update_allowed_attributes)
-    |> validate_required(@update_required_attributes)
     |> unique_constraint(:email)
   end
 end
