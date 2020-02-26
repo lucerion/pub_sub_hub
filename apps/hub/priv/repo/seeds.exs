@@ -5,4 +5,4 @@ alias PubSubHub.Hub.{Publishers, Channels, Subscribers}
 {:ok, channel} = Channels.create(%{url: "example.com/channel", publisher_id: publisher.id, secret: "channel_secret"})
 
 {:ok, subscriber} = Subscribers.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})
-{:ok, subscription} = Hub.subscribe(subscriber, channel, %{callback_url: "example.com/callback"})
+{:ok, subscription} = Hub.subscribe(subscriber, channel, "example.com/callback")
