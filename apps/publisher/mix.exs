@@ -22,6 +22,8 @@ defmodule PubSubHub.Publisher.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:httpoison, "~> 1.6.0"}
+    ]
   end
 end

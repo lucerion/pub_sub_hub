@@ -7,16 +7,22 @@ defmodule PubSubHub.Hub.API.Endpoint do
 
       alias Plug.Conn.Status
 
-      plug(Plug.Parsers, parsers: [:urlencoded])
+      plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
 
       plug(:match)
       plug(:dispatch)
 
-      defp send_response(conn, reason) do
-        status_code = Status.code(reason)
+      defp send_response(conn, reason_atom) do
+        status_code = Status.code(reason_atom)
         reason_phrase = Status.reason_phrase(status_code)
 
-        send_resp(conn, status_code, reason_phrase)
+        send_response(conn, reason_atom, reason_phrase)
+      end
+
+      defp send_response(conn, reason_atom, body) do
+        status_code = Status.code(reason_atom)
+
+        send_resp(conn, status_code, body)
       end
     end
   end

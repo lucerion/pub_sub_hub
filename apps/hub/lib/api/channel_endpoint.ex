@@ -6,11 +6,11 @@ defmodule PubSubHub.Hub.API.ChannelEndpoint do
   alias PubSubHub.Hub.{Channels, Publishers}
 
   post "/" do
-    with %{"token" => token, "url" => url, "secret" => secret} <- conn.body_params,
+    with %{"token" => token, "url" => url, "channel_secret" => channel_secret} <- conn.body_params,
          publisher when not is_nil(publisher) <- Publishers.find_by(%{token: token}),
          {:ok, channel} when not is_nil(channel) <-
-           Channels.create(%{url: url, secret: secret, publisher_id: publisher.id}) do
-      send_response(conn, :ok)
+           Channels.create(%{url: url, secret: channel_secret, publisher_id: publisher.id}) do
+      send_response(conn, :ok, url)
     else
       _ -> send_response(conn, :unprocessable_entity)
     end

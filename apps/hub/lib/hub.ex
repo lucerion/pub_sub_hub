@@ -4,6 +4,7 @@ defmodule PubSubHub.Hub do
   """
 
   alias PubSubHub.Hub.{
+    Publishers.Publisher,
     Subscribers.Subscriber,
     Channels.Channel,
     Subscriptions.Subscription,
@@ -18,4 +19,7 @@ defmodule PubSubHub.Hub do
 
   @doc "Unsubscriber from a channel"
   def unsubscribe(_subscriber, _channel), do: {:ok, nil}
+
+  @doc "Broadcasts Publishers data to Subscribers"
+  def broadcast(_publisher, _channel, _data), do: {:ok, nil}
 end
