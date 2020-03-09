@@ -7,8 +7,8 @@ defmodule PubSubHub.Hub do
     Publishers.Publisher,
     Subscribers.Subscriber,
     Channels.Channel,
-    Subscriptions.Subscription,
-    Subscriptions
+    Subscriptions,
+    Subscriptions.Subscription
   }
 
   @doc "Subscribe to a channel"
@@ -18,7 +18,12 @@ defmodule PubSubHub.Hub do
     do: Subscriptions.create(%{subscriber_id: subscriber_id, channel_id: channel_id, callback_url: callback_url})
 
   @doc "Unsubscriber from a channel"
-  def unsubscribe(_subscriber, _channel), do: {:ok, nil}
+  @spec unsubscribe(Subscriber.t(), Channel.t()) :: {:ok, Subscription.t()}
+  def unsubscribe(%Subscriber{id: subscriber_id}, %Channel{id: channel_id}) do
+    %{subscriber_id: subscriber_id, channel_id: channel_id}
+    |> Subscriptions.find_by()
+    |> Subscriptions.delete()
+  end
 
   @doc "Broadcasts Publishers data to Subscribers"
   def broadcast(_publisher, _channel, _data), do: {:ok, nil}
