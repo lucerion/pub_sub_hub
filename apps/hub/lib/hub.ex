@@ -4,7 +4,6 @@ defmodule PubSubHub.Hub do
   """
 
   alias PubSubHub.Hub.{
-    Publishers.Publisher,
     Subscribers.Subscriber,
     Channels.Channel,
     Subscriptions,

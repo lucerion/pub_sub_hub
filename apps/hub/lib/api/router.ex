@@ -3,12 +3,10 @@ defmodule PubSubHub.Hub.API.Router do
 
   use PubSubHub.Hub.API.Endpoint
 
-  alias PubSubHub.Hub.API.Endpoints.{PublisherEndpoint, ChannelEndpoint, SubscriberEndpoint, SubscriptionEndpoint}
+  alias PubSubHub.Hub.API.{PublisherEndpoint, SubscriberEndpoint}
 
   forward("/publisher", to: PublisherEndpoint)
-  forward("/channel", to: ChannelEndpoint)
   forward("/subscriber", to: SubscriberEndpoint)
-  forward("/subscription", to: SubscriptionEndpoint)
 
   match _ do
     send_response(conn, :not_found)

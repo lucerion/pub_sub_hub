@@ -1,10 +1,21 @@
-defmodule PubSubHub.Hub.API.Endpoints.SubscriptionEndpoint do
-  @moduledoc "Subscription endpoint"
+defmodule PubSubHub.Hub.API.SubscriberEndpoint do
+  @moduledoc "Subscriber endpoint"
 
   use PubSubHub.Hub.API.Endpoint
 
   alias PubSubHub.Hub
-  alias PubSubHub.Hub.{Subscribers, Channels, Secret}
+  alias PubSubHub.Hub.{Subscribers, Channels, Secret, Token}
+
+  post "/auth" do
+    with %{"email" => email, "secret" => secret} <- conn.body_params,
+         subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{email: email}),
+         true <- Secret.verify(subscriber, secret),
+         {:ok, token} <- Token.refresh(subscriber) do
+      send_response(conn, :ok, token)
+    else
+      _ -> send_response(conn, :unprocessable_entity)
+    end
+  end
 
   post "/", private: %{auth: true} do
     with %{
