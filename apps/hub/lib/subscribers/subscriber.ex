@@ -28,7 +28,7 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   @create_allowed_attributes ~w[email secret]a
   @create_required_attributes ~w[email secret]a
 
-  @update_allowed_attributes ~w[email token]a
+  @update_allowed_attributes ~w[token]a
 
   schema "subscribers" do
     field(:email, :string)
