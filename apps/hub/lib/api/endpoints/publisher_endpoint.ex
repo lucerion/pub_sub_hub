@@ -17,10 +17,9 @@ defmodule PubSubHub.Hub.API.Endpoints.PublisherEndpoint do
     end
   end
 
-  post "/publish" do
+  post "/publish", private: %{auth: true} do
     with %{"channel_url" => channel_url} <- conn.body_params,
-         token when not is_nil(token) <- token(conn),
-         publisher when not is_nil(publisher) <- Publishers.find_by(%{token: token}),
+         publisher when not is_nil(publisher) <- Publishers.find_by(%{token: token(conn)}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url, publisher_id: publisher.id}),
          {:ok, _} <- Hub.broadcast(publisher, channel, "data_from_body") do
       send_response(conn, :ok)

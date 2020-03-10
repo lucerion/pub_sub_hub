@@ -10,6 +10,7 @@ defmodule PubSubHub.Hub.API.Endpoint do
       plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
 
       plug(:match)
+      plug(PubSubHub.Hub.API.Auth)
       plug(:dispatch)
 
       defp send_response(conn, reason_atom) do
@@ -25,12 +26,7 @@ defmodule PubSubHub.Hub.API.Endpoint do
         send_resp(conn, status_code, body)
       end
 
-      defp token(conn) do
-        case get_req_header(conn, "authorization") do
-          ["Bearer " <> token] -> token
-          _ -> nil
-        end
-      end
+      defp token(conn), do: conn.private.token
     end
   end
 end

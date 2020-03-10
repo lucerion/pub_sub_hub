@@ -6,14 +6,13 @@ defmodule PubSubHub.Hub.API.Endpoints.SubscriptionEndpoint do
   alias PubSubHub.Hub
   alias PubSubHub.Hub.{Subscribers, Channels, Secret}
 
-  post "/" do
+  post "/", private: %{auth: true} do
     with %{
            "callback_url" => callback_url,
            "channel_url" => channel_url,
            "channel_secret" => channel_secret
          } <- conn.body_params,
-         token when not is_nil(token) <- token(conn),
-         subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
+         subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token(conn)}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret),
          {:ok, _} <- Hub.subscribe(subscriber, channel, callback_url) do
@@ -23,10 +22,9 @@ defmodule PubSubHub.Hub.API.Endpoints.SubscriptionEndpoint do
     end
   end
 
-  delete "/" do
+  delete "/", private: %{auth: true} do
     with %{"channel_url" => channel_url, "channel_secret" => channel_secret} <- conn.body_params,
-         token when not is_nil(token) <- token(conn),
-         subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
+         subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token(conn)}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret),
          {:ok, _} <- Hub.unsubscribe(subscriber, channel) do
