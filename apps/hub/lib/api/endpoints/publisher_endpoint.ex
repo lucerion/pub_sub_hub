@@ -1,4 +1,4 @@
-defmodule PubSubHub.Hub.API.PublisherEndpoint do
+defmodule PubSubHub.Hub.API.Endpoints.PublisherEndpoint do
   @moduledoc "Publisher endpoint"
 
   use PubSubHub.Hub.API.Endpoint

@@ -1,4 +1,4 @@
-defmodule PubSubHub.Hub.API.ChannelEndpoint do
+defmodule PubSubHub.Hub.API.Endpoints.ChannelEndpoint do
   @moduledoc "Channel endpoint"
 
   use PubSubHub.Hub.API.Endpoint

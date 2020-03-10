@@ -1,4 +1,4 @@
-defmodule PubSubHub.Hub.API.SubscriptionEndpoint do
+defmodule PubSubHub.Hub.API.Endpoints.SubscriptionEndpoint do
   @moduledoc "Subscription endpoint"
 
   use PubSubHub.Hub.API.Endpoint

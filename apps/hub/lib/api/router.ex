@@ -1,9 +1,9 @@
-defmodule PubSubHub.Hub.Router do
+defmodule PubSubHub.Hub.API.Router do
   @moduledoc "Hub router"
 
   use PubSubHub.Hub.API.Endpoint
 
-  alias PubSubHub.Hub.API.{PublisherEndpoint, ChannelEndpoint, SubscriberEndpoint, SubscriptionEndpoint}
+  alias PubSubHub.Hub.API.Endpoints.{PublisherEndpoint, ChannelEndpoint, SubscriberEndpoint, SubscriptionEndpoint}
 
   forward("/publisher", to: PublisherEndpoint)
   forward("/channel", to: ChannelEndpoint)
