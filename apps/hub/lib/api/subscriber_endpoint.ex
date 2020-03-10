@@ -5,7 +5,7 @@ defmodule PubSubHub.Hub.API.SubscriberEndpoint do
 
   alias PubSubHub.Hub.{Subscribers, Secret, Token}
 
-  post "/verify" do
+  post "/auth" do
     with %{"email" => email, "secret" => secret} <- conn.body_params,
          subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{email: email}),
          true <- Secret.verify(subscriber, secret),

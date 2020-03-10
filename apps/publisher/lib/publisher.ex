@@ -20,7 +20,7 @@ defmodule PubSubHub.Publisher do
   @doc "Deletes a channel"
   @spec delete_channel(%{token: String.t(), url: String.t()}) :: response
   def delete_channel(params) do
-    case HTTPoison.request(:delete, @channel_url, {:multipart, map_to_tuples_list(params)}, @headers) do
+    case HTTPoison.request(:delete, @channel_url, {:multipart, request_params(params)}, request_headers(params)) do
       {:ok, %HTTPoison.Response{status_code: 200}} -> {:ok, nil}
       {:ok, %HTTPoison.Response{status_code: 422, body: error_message}} -> {:error, error_message}
       error -> error
@@ -32,13 +32,19 @@ defmodule PubSubHub.Publisher do
   def publish(params), do: post("#{@publisher_url}/publish", params)
 
   defp post(url, params) do
-    case HTTPoison.post(url, {:multipart, map_to_tuples_list(params)}, @headers) do
+    case HTTPoison.post(url, {:multipart, request_params(params)}, request_headers(params)) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, body}
       {:ok, %HTTPoison.Response{status_code: 422, body: error_message}} -> {:error, error_message}
       error -> error
     end
   end
 
-  defp map_to_tuples_list(params),
-    do: Enum.map(params, fn {key, value} -> {to_string(key), value} end)
+  defp request_params(params) do
+    params
+    |> Map.delete(:token)
+    |> Enum.map(fn {key, value} -> {to_string(key), value} end)
+  end
+
+  defp request_headers(%{token: token}), do: @headers ++ ["Authorization": "Bearer #{token}"]
+  defp request_headers(_), do: @headers
 end

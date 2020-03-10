@@ -24,6 +24,13 @@ defmodule PubSubHub.Hub.API.Endpoint do
 
         send_resp(conn, status_code, body)
       end
+
+      defp token(conn) do
+        case get_req_header(conn, "authorization") do
+          ["Bearer " <> token] -> token
+          _ -> nil
+        end
+      end
     end
   end
 end

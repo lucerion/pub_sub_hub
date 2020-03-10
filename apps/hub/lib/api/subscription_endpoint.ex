@@ -8,11 +8,11 @@ defmodule PubSubHub.Hub.API.SubscriptionEndpoint do
 
   post "/" do
     with %{
-           "token" => token,
            "callback_url" => callback_url,
            "channel_url" => channel_url,
            "channel_secret" => channel_secret
          } <- conn.body_params,
+         token when not is_nil(token) <- token(conn),
          subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret),
@@ -24,7 +24,8 @@ defmodule PubSubHub.Hub.API.SubscriptionEndpoint do
   end
 
   delete "/" do
-    with %{"token" => token, "channel_url" => channel_url, "channel_secret" => channel_secret} <- conn.body_params,
+    with %{"channel_url" => channel_url, "channel_secret" => channel_secret} <- conn.body_params,
+         token when not is_nil(token) <- token(conn),
          subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret),
