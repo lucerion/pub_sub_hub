@@ -13,20 +13,20 @@ defmodule PubSubHub.Hub.API.Endpoint do
       plug(PubSubHub.Hub.API.Auth)
       plug(:dispatch)
 
-      defp send_response(conn, reason_atom) do
+      defp send_response(%Plug.Conn{} = conn, reason_atom) do
         status_code = Status.code(reason_atom)
         reason_phrase = Status.reason_phrase(status_code)
 
         send_response(conn, reason_atom, reason_phrase)
       end
 
-      defp send_response(conn, reason_atom, body) do
+      defp send_response(%Plug.Conn{} = conn, reason_atom, body) do
         status_code = Status.code(reason_atom)
 
         send_resp(conn, status_code, body)
       end
 
-      defp token(conn), do: conn.private.token
+      defp token(%Plug.Conn{private: %{token: token}}), do: token
     end
   end
 end

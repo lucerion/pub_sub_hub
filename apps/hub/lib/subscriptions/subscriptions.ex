@@ -15,10 +15,10 @@ defmodule PubSubHub.Hub.Subscriptions do
   end
 
   @doc "Creates a subscription"
-  @spec create(Subscription.create_attributes()) :: {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
+  @spec create(Subscription.attributes()) :: {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
   def create(attributes) do
     %Subscription{}
-    |> Subscription.create_changeset(attributes)
+    |> Subscription.changeset(attributes)
     |> Repo.insert()
   end
 

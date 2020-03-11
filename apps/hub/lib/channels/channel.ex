@@ -10,14 +10,14 @@ defmodule PubSubHub.Hub.Channels.Channel do
   @type t :: %__MODULE__{
           url: String.t(),
           secret_hash: String.t(),
-          publisher_id: integer
+          publisher_id: Publisher.id()
         }
 
   @type id :: String.t() | integer
 
   @type attributes :: %{
           url: String.t(),
-          secret: String.t(),
+          secret: Secret.t(),
           publisher_id: Publisher.id() | nil
         }
 

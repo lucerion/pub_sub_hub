@@ -1,6 +1,8 @@
 defmodule PubSubHub.Hub.Secret do
   @moduledoc "Secret keys functions"
 
+  @type t :: String.t()
+
   @doc "Hashes a secret key"
   @spec hash_secret(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def hash_secret(%Ecto.Changeset{valid?: false} = changeset), do: changeset

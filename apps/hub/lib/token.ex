@@ -3,6 +3,8 @@ defmodule PubSubHub.Hub.Token do
 
   alias PubSubHub.Hub.Repo
 
+  @type t :: String.t()
+
   @default_secret_key_length 16
 
   @doc "Generates random secret key"

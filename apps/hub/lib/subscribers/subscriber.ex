@@ -5,24 +5,24 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Subscriptions.Subscription, Secret}
+  alias PubSubHub.Hub.{Subscriptions.Subscription, Secret, Token}
 
   @type t :: %__MODULE__{
           email: String.t(),
           secret_hash: String.t(),
-          token: String.t()
+          token: Token.t()
         }
 
   @type id :: String.t() | integer
 
   @type create_attributes :: %{
           email: String.t(),
-          secret: String.t()
+          secret: Secret.t()
         }
 
   @type update_attributes :: %{
           email: String.t(),
-          token: String.t()
+          token: Token.t()
         }
 
   @create_allowed_attributes ~w[email secret]a
@@ -51,9 +51,6 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
   end
 
   @spec update_changeset(%__MODULE__{}, update_attributes) :: Ecto.Changeset.t()
-  def update_changeset(%__MODULE__{} = subscriber, attributes) do
-    subscriber
-    |> cast(attributes, @update_allowed_attributes)
-    |> unique_constraint(:email)
-  end
+  def update_changeset(%__MODULE__{} = subscriber, attributes),
+    do: cast(subscriber, attributes, @update_allowed_attributes)
 end
