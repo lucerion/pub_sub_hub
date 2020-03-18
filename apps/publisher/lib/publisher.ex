@@ -39,5 +39,5 @@ defmodule PubSubHub.Publisher do
   end
 
   defp headers(%{token: token}), do: @headers ++ ["Authorization": "Bearer #{token}"]
-  defp headers(_), do: @headers
+  defp headers(_params), do: @headers
 end

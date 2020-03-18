@@ -32,7 +32,7 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
   end
 
   @spec changeset(%__MODULE__{}, map) :: Ecto.Changeset.t()
-  def changeset(%__MODULE__{} = subscription, attributes \\ %{}) do
+  def changeset(%__MODULE__{} = subscription, attributes) do
     subscription
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)

@@ -7,6 +7,8 @@ defmodule PubSubHub.Hub.API.Endpoint do
 
       alias Plug.Conn.Status
 
+      alias PubSubHub.Hub.{Secret, Token}
+
       plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
 
       plug(:match)
@@ -16,17 +18,23 @@ defmodule PubSubHub.Hub.API.Endpoint do
       defp send_response(%Plug.Conn{} = conn, reason_atom) do
         status_code = Status.code(reason_atom)
         reason_phrase = Status.reason_phrase(status_code)
-
         send_response(conn, reason_atom, reason_phrase)
       end
 
-      defp send_response(%Plug.Conn{} = conn, reason_atom, body) do
-        status_code = Status.code(reason_atom)
+      defp send_response(%Plug.Conn{} = conn, reason_atom, body),
+        do: send_resp(conn, Status.code(reason_atom), body)
 
-        send_resp(conn, status_code, body)
+      defp auth(nil, conn), do: send_response(conn, :unprocessable_entity)
+
+      defp auth(user, %Plug.Conn{body_params: body_params} = conn) do
+        with %{"secret" => secret} <- body_params,
+             true <- Secret.verify(user, secret),
+             {:ok, token} <- Token.refresh(user) do
+          send_response(conn, :ok, token)
+        else
+          _ -> send_response(conn, :unprocessable_entity)
+        end
       end
-
-      defp token(%Plug.Conn{private: %{token: token}}), do: token
     end
   end
 end
