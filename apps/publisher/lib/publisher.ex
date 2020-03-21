@@ -17,11 +17,11 @@ defmodule PubSubHub.Publisher do
   def publish(params), do: request(:post, @publisher_url, params)
 
   @doc "Creates a channel"
-  @spec create_channel(%{token: String.t(), url: String.t(), channel_secret: String.t()}) :: response
+  @spec create_channel(%{token: String.t(), channel_url: String.t(), channel_secret: String.t()}) :: response
   def create_channel(params), do: request(:post, @channel_url, params)
 
   @doc "Deletes a channel"
-  @spec delete_channel(%{token: String.t(), url: String.t()}) :: response
+  @spec delete_channel(%{token: String.t(), channel_url: String.t()}) :: response
   def delete_channel(params), do: request(:delete, @channel_url, params)
 
   defp request(method, url, params) do
@@ -38,6 +38,6 @@ defmodule PubSubHub.Publisher do
     |> Enum.map(fn {key, value} -> {to_string(key), value} end)
   end
 
-  defp headers(%{token: token}), do: @headers ++ ["Authorization": "Bearer #{token}"]
+  defp headers(%{token: token}), do: @headers ++ [Authorization: "Bearer #{token}"]
   defp headers(_params), do: @headers
 end
