@@ -16,10 +16,8 @@ defmodule PubSubHub.Hub.API.PublisherEndpoint do
     with %{"channel_url" => channel_url, "data" => data} <- conn.body_params,
          publisher when not is_nil(publisher) <- current_resource(conn),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url, publisher_id: publisher.id}),
-         {:ok, _} <- Hub.broadcast(publisher, channel, data) do
+         {:ok, _} <- Hub.broadcast(channel, data) do
       send_response(conn, :ok)
-    else
-      _ -> send_response(conn, :unprocessable_entity)
     end
   end
 

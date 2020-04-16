@@ -3,7 +3,10 @@ defmodule PubSubHub.Hub do
   Service that subscribes/unsubscribes Subscribers to Publisher channels and sends Publishers data to the Subscribers
   """
 
+  require Logger
+
   alias PubSubHub.Hub.{
+    Publishers.Publisher,
     Subscribers.Subscriber,
     Channels.Channel,
     Subscriptions,
@@ -28,5 +31,25 @@ defmodule PubSubHub.Hub do
   end
 
   @doc "Broadcasts Publishers data to Subscribers"
-  def broadcast(_publisher, _channel, _data), do: {:ok, nil}
+  @spec broadcast(Channel.t(), String.t()) :: {:ok, nil}
+  def broadcast(%Channel{id: channel_id}, data) do
+    %{channel_id: channel_id}
+    |> Subscriptions.filter()
+    |> Enum.each(&send_data(&1, data))
+
+    {:ok, nil}
+  end
+
+  defp send_data(%Subscription{callback_url: url}, data) do
+    case HTTPoison.request(:post, url, data) do
+      {:ok, %HTTPoison.Response{status_code: 200}} -> {:ok, nil}
+      error -> log_error(error)
+    end
+  end
+
+  defp log_error(error) do
+    error
+    |> inspect()
+    |> Logger.error()
+  end
 end

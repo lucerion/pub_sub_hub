@@ -10,7 +10,15 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
   @channel_url "http://example.com/channel"
   @channel_secret "channel_secret"
 
-  alias PubSubHub.Hub.{Publishers, Publishers.Publisher, Channels, Token}
+  alias PubSubHub.Hub.{
+    Publishers,
+    Publishers.Publisher,
+    Channels,
+    Channels.Channel,
+    Subscribers,
+    Subscriptions,
+    Token
+  }
 
   setup do
     {:ok, publisher} = Publishers.create(%{email: @publisher_email, secret: @publisher_secret})
@@ -32,7 +40,8 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
 
   describe "POST /publisher" do
     test "publish data", %{publisher: publisher, token: token} do
-      create_channel(publisher)
+      {:ok, channel} = create_channel(publisher)
+      create_subscription(channel)
 
       response =
         request(:post, @publisher_endpoint_url, %{
@@ -74,4 +83,15 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
 
   defp create_channel(%Publisher{id: publisher_id}),
     do: Channels.create(%{url: @channel_url, secret: @channel_secret, publisher_id: publisher_id})
+
+  defp create_subscription(%Channel{id: channel_id}) do
+    {:ok, subscriber} = Subscribers.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})
+
+    {:ok, _subscription} =
+      Subscriptions.create(%{
+        subscriber_id: subscriber.id,
+        channel_id: channel_id,
+        callback_url: "http://example.com"
+      })
+  end
 end

@@ -35,12 +35,13 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
     test "subscribes to a channel", %{token: token} do
       create_channel()
 
-      response = request(:post, @subscriber_endpoint_url, %{
-        token: token,
-        callback_url: "http://example.com/callback",
-        channel_url: @channel_url,
-        channel_secret: @channel_secret
-      })
+      response =
+        request(:post, @subscriber_endpoint_url, %{
+          token: token,
+          callback_url: "http://example.com/callback",
+          channel_url: @channel_url,
+          channel_secret: @channel_secret
+        })
 
       assert success_response(response)
     end

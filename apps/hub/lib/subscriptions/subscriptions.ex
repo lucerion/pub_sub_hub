@@ -10,9 +10,20 @@ defmodule PubSubHub.Hub.Subscriptions do
   def find_by(%{subscriber_id: subscriber_id, channel_id: channel_id}) do
     Subscription
     |> where(subscriber_id: ^subscriber_id)
-    |> where(channel_id: ^channel_id)
+    |> by_channel_query(channel_id)
     |> Repo.one()
   end
+
+  def find_by(_attributes), do: nil
+
+  @doc "Fetches subscriptions by criteria"
+  def filter(%{channel_id: channel_id}) do
+    Subscription
+    |> by_channel_query(channel_id)
+    |> Repo.all()
+  end
+
+  def filter(_attributes), do: []
 
   @doc "Creates a subscription"
   @spec create(Subscription.attributes()) :: {:ok, Subscription.t()} | {:error, Ecto.Changeset.t()}
@@ -25,4 +36,6 @@ defmodule PubSubHub.Hub.Subscriptions do
   @doc "Deletes a subscription"
   @spec delete(Subscription.t()) :: {:ok, Subscription.t()}
   def delete(%Subscription{} = subscription), do: Repo.delete(subscription)
+
+  defp by_channel_query(query, channel_id), do: where(query, channel_id: ^channel_id)
 end
