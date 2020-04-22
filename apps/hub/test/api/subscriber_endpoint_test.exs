@@ -11,7 +11,16 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
   @channel_secret "channel_secret"
 
   alias PubSubHub.Hub
-  alias PubSubHub.Hub.{Subscribers, Publishers, Channels, Token}
+
+  alias PubSubHub.Hub.{
+    Subscribers,
+    Subscribers.Subscriber,
+    Publishers,
+    Channels,
+    Channels.Channel,
+    Subscriptions,
+    Token
+  }
 
   setup do
     {:ok, subscriber} = Subscribers.create(%{email: @subscriber_email, secret: @subscriber_secret})
@@ -50,7 +59,7 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
   describe "DELETE /subscriber" do
     test "unsubscribes from a channel", %{token: token, subscriber: subscriber} do
       {:ok, channel} = create_channel()
-      Hub.subscribe(subscriber, channel, @callback_url)
+      {:ok, _subscription} = create_subscription(subscriber, channel)
 
       response = request(:delete, @subscriber_endpoint_url, %{token: token, channel_url: @channel_url})
 
@@ -62,4 +71,7 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
     {:ok, publisher} = Publishers.create(%{email: "publisher@example.com", secret: "publisher_secret"})
     Channels.create(%{url: @channel_url, secret: @channel_secret, publisher_id: publisher.id})
   end
+
+  def create_subscription(%Subscriber{id: subscriber_id}, %Channel{id: channel_id}),
+    do: Subscriptions.create(%{subscriber_id: subscriber_id, channel_id: channel_id, callback_url: @callback_url})
 end

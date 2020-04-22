@@ -3,7 +3,7 @@ defmodule PubSubHub.Hub.Subscriptions do
 
   import Ecto.Query
 
-  alias PubSubHub.Hub.{Subscriptions.Subscription, Repo}
+  alias PubSubHub.Hub.{Subscriptions.Subscription, Channels.Channel, Repo}
 
   @doc "Fetches subscription by criteria"
   @spec find_by(map) :: Subscription.t() | nil
@@ -17,11 +17,14 @@ defmodule PubSubHub.Hub.Subscriptions do
   def find_by(_attributes), do: nil
 
   @doc "Fetches subscriptions by criteria"
+  @spec filter(map) :: list(Subscription.t()) | []
   def filter(%{channel_id: channel_id}) do
     Subscription
     |> by_channel_query(channel_id)
     |> Repo.all()
   end
+
+  def filter(%Channel{id: channel_id}), do: filter(%{channel_id: channel_id})
 
   def filter(_attributes), do: []
 

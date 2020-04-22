@@ -5,8 +5,9 @@ defmodule PubSubHub.Hub.API.Endpoint do
     quote do
       use Plug.Router
 
-      alias Plug.Conn.Status
+      require Logger
 
+      alias Plug.Conn.Status
       alias PubSubHub.Hub.{Secret, Token}
 
       plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
@@ -34,6 +35,16 @@ defmodule PubSubHub.Hub.API.Endpoint do
         else
           _ -> send_response(conn, :unprocessable_entity)
         end
+      end
+
+      defp current_resource(%Plug.Conn{body_params: %{"email" => email}}, repo), do: repo.find_by(%{email: email})
+      defp current_resource(%Plug.Conn{private: %{token: token}}, repo), do: repo.find_by(%{token: token})
+      defp current_resource(_conn, _repo), do: nil
+
+      defp log_error(error) do
+        error
+        |> inspect()
+        |> Logger.error()
       end
     end
   end
