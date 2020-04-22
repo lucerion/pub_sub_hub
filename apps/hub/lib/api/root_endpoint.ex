@@ -1,5 +1,5 @@
-defmodule PubSubHub.Hub.API.Router do
-  @moduledoc "Hub router"
+defmodule PubSubHub.Hub.API.RootEndpoint do
+  @moduledoc "Hub root endpoint"
 
   use PubSubHub.Hub.API.Endpoint
 
