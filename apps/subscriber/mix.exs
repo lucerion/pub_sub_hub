@@ -17,6 +17,7 @@ defmodule PubSubHub.Subscriber.MixProject do
 
   def application do
     [
+      mod: {PubSubHub.Subscriber.Application, []},
       extra_applications: [:logger]
     ]
   end

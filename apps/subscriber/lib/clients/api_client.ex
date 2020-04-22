@@ -1,4 +1,4 @@
-defmodule PubSubHub.Subscriber.APIClient do
+defmodule PubSubHub.Subscriber.Clients.APIClient do
   @moduledoc "Hub API client"
 
   @type response :: {:ok, String.t()} | {:error, String.t()} | {:error, any}
