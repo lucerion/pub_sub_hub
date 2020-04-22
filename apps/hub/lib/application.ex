@@ -10,7 +10,8 @@ defmodule PubSubHub.Hub.Application do
 
     children = [
       worker(PubSubHub.Hub.Repo, []),
-      {Plug.Cowboy, scheme: :http, plug: PubSubHub.Hub.API.RootEndpoint, options: [port: port]}
+      {Plug.Cowboy, scheme: :http, plug: PubSubHub.Hub.API.RootEndpoint, options: [port: port]},
+      {Task.Supervisor, name: PubSubHub.Hub.RPC.Supervisor}
     ]
 
     opts = [strategy: :one_for_one, name: PubSubHub.Hub.Supervisor]
