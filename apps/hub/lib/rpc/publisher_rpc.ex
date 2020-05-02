@@ -37,6 +37,7 @@ defmodule PubSubHub.Hub.RPC.PublisherRPC do
   end
 
   @doc "Sends data to Hub"
+  @spec publish(%{token: Token.t(), channel_url: String.t(), data: any}) :: term
   def publish(%{token: token, channel_url: channel_url, data: data}) do
     with publisher when not is_nil(publisher) <- Publishers.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url, publisher_id: publisher.id}) do
@@ -48,6 +49,9 @@ defmodule PubSubHub.Hub.RPC.PublisherRPC do
     end
   end
 
-  defp send_data(%Subscription{callback_url: callback_url}, data),
-    do: send_response(data, %{supervisor: @subscriber.supervisor, url: callback_url, app: @subscriber.app})
+  defp send_response(response), do: send_response(response, @publisher)
+
+  defp send_data(%Subscription{callback_url: callback_url}, data) do
+    send_response(data, %{supervisor: @subscriber.supervisor, url: callback_url, app: @subscriber.app})
+  end
 end

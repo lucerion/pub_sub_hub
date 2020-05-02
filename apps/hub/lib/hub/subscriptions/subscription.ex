@@ -14,7 +14,7 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
         }
 
   @type attributes :: %{
-          callback_url: String.t() | atom,
+          callback_url: String.t(),
           subscriber_id: Subscriber.id() | nil,
           channel_id: Channel.id() | nil
         }

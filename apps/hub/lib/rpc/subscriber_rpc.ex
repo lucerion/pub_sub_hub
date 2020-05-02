@@ -24,7 +24,7 @@ defmodule PubSubHub.Hub.RPC.SubscriberRPC do
          true <- Secret.verify(channel, channel_secret) do
       %{subscriber_id: subscriber.id, channel_id: channel.id, callback_url: @subscriber.url}
       |> Subscriptions.create()
-      |> send_response(@subscriber)
+      |> send_response()
     end
   end
 
@@ -36,7 +36,9 @@ defmodule PubSubHub.Hub.RPC.SubscriberRPC do
       %{subscriber_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.find_by()
       |> Subscriptions.delete()
-      |> send_response(@subscriber)
+      |> send_response()
     end
   end
+
+  defp send_response(response), do: send_response(response, @subscriber)
 end
