@@ -26,3 +26,4 @@ publisher-*.tar
 subscriber-*.tar
 
 .env
+.iex.exs
