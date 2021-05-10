@@ -1,15 +1,9 @@
 defmodule PubSubHub.Hub.RPC.SubscriberRPC do
   @moduledoc "Subscriber RPC functions"
 
-  use PubSubHub.Hub.RPC
+  use PubSubHub.Hub.RPC.Auth
 
-  @repo PubSubHub.Hub.Subscribers
-
-  alias PubSubHub.Hub.{Subscribers, Channels, Subscriptions, Secret, Token}
-
-  @doc "Authenticate Subscriber"
-  @spec auth(%{email: String.t(), secret: Secret.t()}) :: term
-  def auth(params), do: auth(@subscriber, @repo, params)
+  alias PubSubHub.Hub.{Users, Channels, Subscriptions, Secret, Token}
 
   @doc "Subscribes Subscriber to a channel"
   @spec subscribe(%{
@@ -19,10 +13,10 @@ defmodule PubSubHub.Hub.RPC.SubscriberRPC do
           callback_url: String.t()
         }) :: term
   def subscribe(%{token: token, channel_url: channel_url, channel_secret: channel_secret}) do
-    with subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
+    with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret) do
-      %{subscriber_id: subscriber.id, channel_id: channel.id, callback_url: @subscriber.url}
+      %{user_id: subscriber.id, channel_id: channel.id, callback_url: @subscriber.url}
       |> Subscriptions.create()
       |> send_response()
     end
@@ -31,9 +25,9 @@ defmodule PubSubHub.Hub.RPC.SubscriberRPC do
   @doc "Unsubscribes Subscriber from a channel"
   @spec unsubscribe(%{token: Token.t(), channel_url: String.t()}) :: term
   def unsubscribe(%{token: token, channel_url: channel_url}) do
-    with subscriber when not is_nil(subscriber) <- Subscribers.find_by(%{token: token}),
+    with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}) do
-      %{subscriber_id: subscriber.id, channel_id: channel.id}
+      %{user_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.find_by()
       |> Subscriptions.delete()
       |> send_response()

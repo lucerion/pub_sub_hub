@@ -1,4 +1,4 @@
-alias PubSubHub.Hub.{Publishers, Subscribers}
+alias PubSubHub.Hub.Users
 
-{:ok, _publisher} = Publishers.create(%{email: "publisher@example.com", secret: "publisher_secret"})
-{:ok, _subscriber} = Subscribers.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})
+{:ok, _publisher} = Users.create(%{email: "publisher@example.com", secret: "publisher_secret"})
+{:ok, _subscriber} = Users.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})

@@ -13,9 +13,8 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
   alias PubSubHub.Hub
 
   alias PubSubHub.Hub.{
-    Subscribers,
-    Subscribers.Subscriber,
-    Publishers,
+    Users,
+    Users.User,
     Channels,
     Channels.Channel,
     Subscriptions,
@@ -23,7 +22,7 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
   }
 
   setup do
-    {:ok, subscriber} = Subscribers.create(%{email: @subscriber_email, secret: @subscriber_secret})
+    {:ok, subscriber} = Users.create(%{email: @subscriber_email, secret: @subscriber_secret})
     {:ok, token} = Token.refresh(subscriber)
 
     {:ok, subscriber: subscriber, token: token}
@@ -34,7 +33,7 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
       {:ok, token} =
         request(:post, "#{@subscriber_endpoint_url}/auth", %{email: subscriber.email, secret: @subscriber_secret})
 
-      updated_subscriber = Subscribers.find_by(%{email: subscriber.email})
+      updated_subscriber = Users.find_by(%{email: subscriber.email})
 
       assert token == updated_subscriber.token
     end
@@ -68,10 +67,10 @@ defmodule PubSubHub.Hub.Test.API.SubscriberEndpoint do
   end
 
   def create_channel do
-    {:ok, publisher} = Publishers.create(%{email: "publisher@example.com", secret: "publisher_secret"})
-    Channels.create(%{url: @channel_url, secret: @channel_secret, publisher_id: publisher.id})
+    {:ok, publisher} = Users.create(%{email: "publisher@example.com", secret: "publisher_secret"})
+    Channels.create(%{url: @channel_url, secret: @channel_secret, user_id: publisher.id})
   end
 
-  def create_subscription(%Subscriber{id: subscriber_id}, %Channel{id: channel_id}),
-    do: Subscriptions.create(%{subscriber_id: subscriber_id, channel_id: channel_id, callback_url: @callback_url})
+  def create_subscription(%User{id: subscriber_id}, %Channel{id: channel_id}),
+    do: Subscriptions.create(%{user_id: subscriber_id, channel_id: channel_id, callback_url: @callback_url})
 end

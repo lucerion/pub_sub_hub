@@ -7,9 +7,9 @@ defmodule PubSubHub.Hub.Subscriptions do
 
   @doc "Fetches subscription by criteria"
   @spec find_by(map) :: Subscription.t() | nil
-  def find_by(%{subscriber_id: subscriber_id, channel_id: channel_id}) do
+  def find_by(%{user_id: user_id, channel_id: channel_id}) do
     Subscription
-    |> where(subscriber_id: ^subscriber_id)
+    |> where(user_id: ^user_id)
     |> by_channel_query(channel_id)
     |> Repo.one()
   end

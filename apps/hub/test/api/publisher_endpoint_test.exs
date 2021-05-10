@@ -11,17 +11,16 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
   @channel_secret "channel_secret"
 
   alias PubSubHub.Hub.{
-    Publishers,
-    Publishers.Publisher,
+    Users,
+    Users.User,
     Channels,
     Channels.Channel,
-    Subscribers,
     Subscriptions,
     Token
   }
 
   setup do
-    {:ok, publisher} = Publishers.create(%{email: @publisher_email, secret: @publisher_secret})
+    {:ok, publisher} = Users.create(%{email: @publisher_email, secret: @publisher_secret})
     {:ok, token} = Token.refresh(publisher)
 
     {:ok, publisher: publisher, token: token}
@@ -32,7 +31,7 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
       {:ok, token} =
         request(:post, "#{@publisher_endpoint_url}/auth", %{email: publisher.email, secret: @publisher_secret})
 
-      updated_publisher = Publishers.find_by(%{email: publisher.email})
+      updated_publisher = Users.find_by(%{email: publisher.email})
 
       assert token == updated_publisher.token
     end
@@ -79,17 +78,17 @@ defmodule PubSubHub.Hub.Test.API.PublisherEndpoint do
     end
   end
 
-  defp channel(%Publisher{id: publisher_id}), do: Channels.find_by(%{url: @channel_url, publisher_id: publisher_id})
+  defp channel(%User{id: user_id}), do: Channels.find_by(%{url: @channel_url, user_id: user_id})
 
-  defp create_channel(%Publisher{id: publisher_id}),
-    do: Channels.create(%{url: @channel_url, secret: @channel_secret, publisher_id: publisher_id})
+  defp create_channel(%User{id: user_id}),
+    do: Channels.create(%{url: @channel_url, secret: @channel_secret, user_id: user_id})
 
   defp create_subscription(%Channel{id: channel_id}) do
-    {:ok, subscriber} = Subscribers.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})
+    {:ok, subscriber} = Users.create(%{email: "subscriber@example.com", secret: "subscriber_secret"})
 
     {:ok, _subscription} =
       Subscriptions.create(%{
-        subscriber_id: subscriber.id,
+        user_id: subscriber.id,
         channel_id: channel_id,
         callback_url: "http://example.com"
       })

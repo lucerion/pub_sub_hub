@@ -1,11 +1,11 @@
-defmodule PubSubHub.Hub.Subscribers.Subscriber do
-  @moduledoc "Subscriber model"
+defmodule PubSubHub.Hub.Users.User do
+  @moduledoc "User model"
 
   use Ecto.Schema
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Subscriptions.Subscription, Secret, Token}
+  alias PubSubHub.Hub.{Channels.Channel, Subscriptions.Subscription, Secret, Token}
 
   @type t :: %__MODULE__{
           email: String.t(),
@@ -30,13 +30,14 @@ defmodule PubSubHub.Hub.Subscribers.Subscriber do
 
   @update_allowed_attributes ~w[token]a
 
-  schema "subscribers" do
+  schema "users" do
     field(:email, :string)
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
     field(:token, :string)
 
     has_many(:subscriptions, Subscription, on_delete: :delete_all)
+    has_many(:channels, Channel, on_delete: :delete_all)
 
     timestamps()
   end
