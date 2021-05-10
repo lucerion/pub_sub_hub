@@ -5,12 +5,12 @@ defmodule PubSubHub.Hub.Channels.Channel do
 
   import Ecto.Changeset
 
-  alias PubSubHub.Hub.{Publishers.Publisher, Subscriptions.Subscription, Secret}
+  alias PubSubHub.Hub.{Users.User, Subscriptions.Subscription, Secret}
 
   @type t :: %__MODULE__{
           url: String.t(),
           secret_hash: String.t(),
-          publisher_id: Publisher.id()
+          user_id: User.id()
         }
 
   @type id :: String.t() | integer
@@ -18,18 +18,18 @@ defmodule PubSubHub.Hub.Channels.Channel do
   @type attributes :: %{
           url: String.t(),
           secret: Secret.t(),
-          publisher_id: Publisher.id() | nil
+          user_id: User.id() | nil
         }
 
-  @allowed_attributes ~w[secret url publisher_id]a
-  @required_attributes ~w[secret url publisher_id]a
+  @allowed_attributes ~w[secret url user_id]a
+  @required_attributes ~w[secret url user_id]a
 
   schema "channels" do
     field(:url, :string)
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
 
-    belongs_to(:publisher, Publisher)
+    belongs_to(:user, User)
     has_many(:subscriptions, Subscription, on_delete: :delete_all)
 
     timestamps()
@@ -40,7 +40,7 @@ defmodule PubSubHub.Hub.Channels.Channel do
     channel
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)
-    |> unique_constraint(:url, name: :channels_url_publisher_id_index)
+    |> unique_constraint(:url, name: :channels_url_user_id_index)
     |> Secret.hash_secret()
   end
 end

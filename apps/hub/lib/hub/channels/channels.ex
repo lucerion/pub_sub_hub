@@ -13,10 +13,10 @@ defmodule PubSubHub.Hub.Channels do
     |> Repo.one()
   end
 
-  def find_by(%{url: url, publisher_id: publisher_id}) do
+  def find_by(%{url: url, user_id: user_id}) do
     Channel
     |> by_url_query(url)
-    |> where(publisher_id: ^publisher_id)
+    |> where(user_id: ^user_id)
     |> Repo.one()
   end
 

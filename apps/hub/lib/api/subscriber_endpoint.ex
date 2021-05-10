@@ -3,8 +3,7 @@ defmodule PubSubHub.Hub.API.SubscriberEndpoint do
 
   use PubSubHub.Hub.API.Endpoint
 
-  alias PubSubHub.Hub
-  alias PubSubHub.Hub.{Subscribers, Channels, Subscriptions, Secret}
+  alias PubSubHub.Hub.{Channels, Subscriptions, Secret}
 
   post "/auth" do
     conn
@@ -22,7 +21,7 @@ defmodule PubSubHub.Hub.API.SubscriberEndpoint do
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          true <- Secret.verify(channel, channel_secret),
          {:ok, _subscription} <-
-           Subscriptions.create(%{subscriber_id: subscriber.id, channel_id: channel.id, callback_url: callback_url}) do
+           Subscriptions.create(%{user_id: subscriber.id, channel_id: channel.id, callback_url: callback_url}) do
       send_response(conn, :ok)
     else
       _ -> send_response(conn, :unprocessable_entity)
@@ -34,13 +33,11 @@ defmodule PubSubHub.Hub.API.SubscriberEndpoint do
          subscriber when not is_nil(subscriber) <- current_resource(conn),
          channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
          subscription when not is_nil(subscription) <-
-           Subscriptions.find_by(%{subscriber_id: subscriber.id, channel_id: channel.id}),
+           Subscriptions.find_by(%{user_id: subscriber.id, channel_id: channel.id}),
          {:ok, _subscription} <- Subscriptions.delete(subscription) do
       send_response(conn, :ok)
     else
       _ -> send_response(conn, :unprocessable_entity)
     end
   end
-
-  defp current_resource(%Plug.Conn{} = conn), do: current_resource(conn, Subscribers)
 end

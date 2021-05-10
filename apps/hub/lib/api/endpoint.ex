@@ -8,7 +8,7 @@ defmodule PubSubHub.Hub.API.Endpoint do
       require Logger
 
       alias Plug.Conn.Status
-      alias PubSubHub.Hub.{Secret, Token}
+      alias PubSubHub.Hub.{Users, Secret, Token}
 
       plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
 
@@ -37,8 +37,8 @@ defmodule PubSubHub.Hub.API.Endpoint do
         end
       end
 
-      defp current_resource(%Plug.Conn{body_params: %{"email" => email}}, repo), do: repo.find_by(%{email: email})
-      defp current_resource(%Plug.Conn{private: %{token: token}}, repo), do: repo.find_by(%{token: token})
+      defp current_resource(%Plug.Conn{body_params: %{"email" => email}}), do: Users.find_by(%{email: email})
+      defp current_resource(%Plug.Conn{private: %{token: token}}), do: Users.find_by(%{token: token})
       defp current_resource(_conn, _repo), do: nil
 
       defp log_error(error) do

@@ -1,5 +1,5 @@
-defmodule PubSubHub.Hub.RPC do
-  @moduledoc "RPC functions for work with Publisher and Subscriber"
+defmodule PubSubHub.Hub.RPC.Auth do
+  @moduledoc "RPC auth"
 
   defmacro __using__(_opts) do
     quote do
@@ -23,12 +23,12 @@ defmodule PubSubHub.Hub.RPC do
 
       @response_function :receive
 
-      alias PubSubHub.Hub.{Secret, Token}
+      alias PubSubHub.Hub.{Users, Secret, Token}
 
       @doc "Authenticate user"
-      @spec auth(user_options, atom, %{email: String.t(), secret: Secret.t()}) :: term
-      def auth(user_options, repo, %{email: email, secret: secret}) do
-        with user when not is_nil(user) <- repo.find_by(%{email: email}),
+      @spec auth(user_options, %{email: String.t(), secret: Secret.t()}) :: term
+      def auth(user_options, %{email: email, secret: secret}) do
+        with user when not is_nil(user) <- Users.find_by(%{email: email}),
              true <- Secret.verify(user, secret) do
           user
           |> Token.refresh()
