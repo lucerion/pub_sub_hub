@@ -1,5 +1,5 @@
 defmodule PubSubHub.Publisher do
-  @moduledoc "Service that sends channels data to the Hub"
+  @moduledoc "A service that sends data via channels to the hub"
 
   @type response :: {:ok, any} | {:error, any}
 

@@ -1,5 +1,5 @@
 defmodule PubSubHub.Hub.Users do
-  @moduledoc "Users related business logic"
+  @moduledoc "Users manipulation functions"
 
   import Ecto.Query
 

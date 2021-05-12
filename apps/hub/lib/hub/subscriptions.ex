@@ -1,5 +1,5 @@
 defmodule PubSubHub.Hub.Subscriptions do
-  @moduledoc "Subscriptions related business logic"
+  @moduledoc "Subscriptions manipulation functions"
 
   import Ecto.Query
 
