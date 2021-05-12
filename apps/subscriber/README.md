@@ -1,3 +1,3 @@
 # Subscriber
 
-Service that consumes channels data
+A service that consumes publishers data

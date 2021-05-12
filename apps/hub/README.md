@@ -1,3 +1,3 @@
 # Hub
 
-Service that subscribes/unsubscribes Subscribers to Publisher channels and sends Publishers data to the Subscribers
+A service that subscribes/unsubscribes subscribers to publisher channels and sends publishers data to the subscribers

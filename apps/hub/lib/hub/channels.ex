@@ -1,5 +1,5 @@
 defmodule PubSubHub.Hub.Channels do
-  @moduledoc "Channels related business logic"
+  @moduledoc "Channels manipulation functions"
 
   import Ecto.Query
 
