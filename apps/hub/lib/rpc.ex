@@ -6,19 +6,19 @@ defmodule PubSubHub.Hub.RPC do
       @type user_options :: %{
               url: String.t(),
               supervisor: atom,
-              app: atom
+              module: atom
             }
 
       @publisher %{
         url: Application.get_env(:publisher, :rpc_url),
         supervisor: PubSubHub.Publisher.RPC.Supervisor,
-        app: PubSubHub.Publisher
+        module: PubSubHub.Publisher
       }
 
       @subscriber %{
         url: Application.get_env(:subscriber, :rpc_url),
         supervisor: PubSubHub.Subscriber.RPC.Supervisor,
-        app: PubSubHub.Subscriber
+        module: PubSubHub.Subscriber
       }
 
       @response_function :receive
@@ -36,9 +36,9 @@ defmodule PubSubHub.Hub.RPC do
         end
       end
 
-      defp send_response(response, %{app: app, supervisor: supervisor, url: url}) do
+      defp send_response(response, %{url: url, supervisor: supervisor, module: module}) do
         {supervisor, String.to_atom(url)}
-        |> Task.Supervisor.async(app, @response_function, [response])
+        |> Task.Supervisor.async(module, @response_function, [response])
         |> Task.await()
       end
     end
