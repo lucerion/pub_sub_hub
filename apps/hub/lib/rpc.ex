@@ -1,5 +1,5 @@
-defmodule PubSubHub.Hub.RPC.Auth do
-  @moduledoc "RPC auth"
+defmodule PubSubHub.Hub.RPC do
+  @moduledoc "RPC common functions"
 
   defmacro __using__(_opts) do
     quote do
@@ -12,13 +12,13 @@ defmodule PubSubHub.Hub.RPC.Auth do
       @publisher %{
         url: Application.get_env(:publisher, :rpc_url),
         supervisor: PubSubHub.Publisher.RPC.Supervisor,
-        app: PubSubHub.Publisher.Clients.RPCClient
+        app: PubSubHub.Publisher
       }
 
       @subscriber %{
         url: Application.get_env(:subscriber, :rpc_url),
         supervisor: PubSubHub.Subscriber.RPC.Supervisor,
-        app: PubSubHub.Subscriber.Clients.RPCClient
+        app: PubSubHub.Subscriber
       }
 
       @response_function :receive

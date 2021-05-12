@@ -1,7 +1,7 @@
-defmodule PubSubHub.Hub.RPC.PublisherRPC do
+defmodule PubSubHub.Hub.RPC.Publisher do
   @moduledoc "Publisher RPC functions"
 
-  use PubSubHub.Hub.RPC.Auth
+  use PubSubHub.Hub.RPC
 
   alias PubSubHub.Hub.{Users, Channels, Subscriptions, Subscriptions.Subscription, Secret, Token}
 
