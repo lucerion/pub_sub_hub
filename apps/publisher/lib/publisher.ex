@@ -3,9 +3,9 @@ defmodule PubSubHub.Publisher do
 
   @type response :: {:ok, any} | {:error, any}
 
-  @hub_url Application.get_env(:hub, :rpc_url)
-  @hub_supervisor PubSubHub.Hub.RPC.Supervisor
-  @hub_app PubSubHub.Hub.RPC.Publisher
+  @url Application.get_env(:hub, :rpc_url)
+  @supervisor PubSubHub.Hub.RPC.Supervisor
+  @module PubSubHub.Hub.RPC.Publisher
 
   @doc "Authenticate on Hub"
   @spec auth(%{email: String.t(), secret: String.t()}) :: term
@@ -28,8 +28,8 @@ defmodule PubSubHub.Publisher do
   def receive(response), do: response
 
   defp call(function, options) do
-    {@hub_supervisor, String.to_atom(@hub_url)}
-    |> Task.Supervisor.async(@hub_app, function, [options])
+    {@supervisor, String.to_atom(@url)}
+    |> Task.Supervisor.async(@module, function, [options])
     |> Task.await()
   end
 end
