@@ -8,23 +8,19 @@ defmodule PubSubHub.Hub.Subscriptions.Subscription do
   alias PubSubHub.Hub.{Users.User, Channels.Channel}
 
   @type t :: %__MODULE__{
-          callback_url: String.t(),
           user_id: User.id(),
           channel_id: Channel.id()
         }
 
   @type attributes :: %{
-          callback_url: String.t(),
           user_id: User.id() | nil,
           channel_id: Channel.id() | nil
         }
 
-  @allowed_attributes ~w[callback_url user_id channel_id]a
-  @required_attributes ~w[callback_url user_id channel_id]a
+  @allowed_attributes ~w[user_id channel_id]a
+  @required_attributes ~w[user_id channel_id]a
 
   schema "subscriptions" do
-    field(:callback_url, :string)
-
     belongs_to(:user, User)
     belongs_to(:channel, Channel)
 

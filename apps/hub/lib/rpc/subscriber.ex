@@ -10,13 +10,12 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
           token: Token.t(),
           channel_name: String.t(),
           channel_secret: Secret.t(),
-          callback_url: String.t()
         }) :: term
   def subscribe(%{token: token, channel_name: channel_name, channel_secret: channel_secret}) do
     with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
          channel when not is_nil(channel) <- Channels.find_by(%{name: channel_name}),
          true <- Secret.verify(channel, channel_secret) do
-      %{user_id: subscriber.id, channel_id: channel.id, callback_url: @subscriber.url}
+      %{user_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.create()
       |> send_response()
     end
