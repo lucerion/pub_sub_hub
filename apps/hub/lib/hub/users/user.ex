@@ -10,22 +10,28 @@ defmodule PubSubHub.Hub.Users.User do
   @type t :: %__MODULE__{
           email: String.t(),
           secret_hash: String.t(),
-          token: Token.t()
+          token: Token.t(),
+          rpc_url: String.t(),
+          rpc_supervisor: String.t(),
+          rpc_module: String.t()
         }
 
   @type id :: String.t() | integer
 
   @type create_attributes :: %{
           email: String.t(),
-          secret: Secret.t()
+          secret: Secret.t(),
+          rpc_url: String.t(),
+          rpc_supervisor: String.t(),
+          rpc_module: String.t()
         }
 
   @type update_attributes :: %{
           token: Token.t()
         }
 
-  @create_allowed_attributes ~w[email secret]a
-  @create_required_attributes ~w[email secret]a
+  @create_allowed_attributes ~w[email secret rpc_url rpc_supervisor rpc_module]a
+  @create_required_attributes ~w[email secret rpc_url rpc_supervisor rpc_module]a
 
   @update_allowed_attributes ~w[token]a
 
@@ -34,6 +40,9 @@ defmodule PubSubHub.Hub.Users.User do
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
     field(:token, :string)
+    field(:rpc_url, :string)
+    field(:rpc_supervisor, :string)
+    field(:rpc_module, :string)
 
     has_many(:subscriptions, Subscription, on_delete: :delete_all)
     has_many(:channels, Channel, on_delete: :delete_all)

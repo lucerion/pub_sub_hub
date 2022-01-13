@@ -4,8 +4,8 @@ defmodule PubSubHub.Subscriber do
   @type response :: {:ok, any} | {:error, any}
 
   @url Application.get_env(:hub, :rpc_url)
-  @supervisor PubSubHub.Hub.RPC.Supervisor
-  @module PubSubHub.Hub.RPC.Subscriber
+  @supervisor Application.get_env(:hub, :rpc_supervisor)
+  @module Application.get_env(:hub, :rpc_subscriber_module)
 
   @doc "Authenticate on Hub"
   @spec auth(%{email: String.t(), secret: String.t()}) :: term

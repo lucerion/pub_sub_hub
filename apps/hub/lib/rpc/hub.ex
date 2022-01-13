@@ -6,8 +6,8 @@ defmodule PubSubHub.Hub.RPC.Hub do
   alias PubSubHub.Hub.Subscriptions.Subscription
 
   @doc "Sends data to the subscribers"
-  def broadcast(%Subscription{}, data),
-    do: send_response(data, @subscriber)
+  def broadcast(%Subscription{user: subscriber}, data),
+    do: send_response(data, subscriber)
 
   def broadcast(subscriptions, data), do: Enum.each(subscriptions, &broadcast(&1, data))
 end

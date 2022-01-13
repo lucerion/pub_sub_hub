@@ -1,7 +1,7 @@
 defmodule PubSubHub.Hub.Token do
   @moduledoc "Token functions"
 
-  alias PubSubHub.Hub.{Users, Users.User, Repo}
+  alias PubSubHub.Hub.{Users, Users.User}
 
   @type t :: String.t()
 
