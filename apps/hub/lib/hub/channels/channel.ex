@@ -8,7 +8,7 @@ defmodule PubSubHub.Hub.Channels.Channel do
   alias PubSubHub.Hub.{Users.User, Subscriptions.Subscription, Secret}
 
   @type t :: %__MODULE__{
-          url: String.t(),
+          name: String.t(),
           secret_hash: String.t(),
           user_id: User.id()
         }
@@ -16,16 +16,16 @@ defmodule PubSubHub.Hub.Channels.Channel do
   @type id :: String.t() | integer
 
   @type attributes :: %{
-          url: String.t(),
+          name: String.t(),
           secret: Secret.t(),
           user_id: User.id() | nil
         }
 
-  @allowed_attributes ~w[secret url user_id]a
-  @required_attributes ~w[secret url user_id]a
+  @allowed_attributes ~w[secret name user_id]a
+  @required_attributes ~w[secret name user_id]a
 
   schema "channels" do
-    field(:url, :string)
+    field(:name, :string)
     field(:secret, :string, virtual: true)
     field(:secret_hash, :string)
 
@@ -40,7 +40,7 @@ defmodule PubSubHub.Hub.Channels.Channel do
     channel
     |> cast(attributes, @allowed_attributes)
     |> validate_required(@required_attributes)
-    |> unique_constraint(:url, name: :channels_url_user_id_index)
+    |> unique_constraint(:name, name: :channels_name_user_id_index)
     |> Secret.hash_secret()
   end
 end

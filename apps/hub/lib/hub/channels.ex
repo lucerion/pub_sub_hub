@@ -7,15 +7,15 @@ defmodule PubSubHub.Hub.Channels do
 
   @doc "Fetches a channel by criteria"
   @spec find_by(map) :: Channel.t() | nil
-  def find_by(%{url: url}) do
+  def find_by(%{name: name}) do
     Channel
-    |> by_url_query(url)
+    |> by_name_query(name)
     |> Repo.one()
   end
 
-  def find_by(%{url: url, user_id: user_id}) do
+  def find_by(%{name: name, user_id: user_id}) do
     Channel
-    |> by_url_query(url)
+    |> by_name_query(name)
     |> where(user_id: ^user_id)
     |> Repo.one()
   end
@@ -32,5 +32,5 @@ defmodule PubSubHub.Hub.Channels do
   @spec delete(Channel.t()) :: {:ok, Channel.t()}
   def delete(%Channel{} = channel), do: Repo.delete(channel)
 
-  defp by_url_query(query, url), do: where(query, url: ^url)
+  defp by_name_query(query, name), do: where(query, name: ^name)
 end
