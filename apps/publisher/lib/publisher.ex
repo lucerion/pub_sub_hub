@@ -12,15 +12,15 @@ defmodule PubSubHub.Publisher do
   def auth(params), do: call(:auth, params)
 
   @doc "Creates a channel"
-  @spec create_channel(%{token: String.t(), url: String.t(), channel_secret: String.t()}) :: term
+  @spec create_channel(%{token: String.t(), name: String.t(), secret: String.t()}) :: term
   def create_channel(params), do: call(:create_channel, params)
 
   @doc "Deletes a channel"
-  @spec delete_channel(%{token: String.t(), url: String.t()}) :: term
+  @spec delete_channel(%{token: String.t(), name: String.t()}) :: term
   def delete_channel(params), do: call(:delete_channel, params)
 
   @doc "Publish data"
-  @spec publish(%{token: String.t(), channel_url: String.t(), data: any}) :: term
+  @spec publish(%{token: String.t(), channel_name: String.t(), data: any}) :: term
   def publish(params), do: call(:publish, params)
 
   @doc "Gets response from Hub"

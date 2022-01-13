@@ -3,7 +3,7 @@ defmodule PubSubHub.Hub.Repo.Migrations.CreateChannels do
 
   def change do
     create table(:channels) do
-      add :url,         :string, null: false
+      add :name,        :string, null: false
       add :secret_hash, :string, null: false
 
       add :user_id, references(:users, on_delete: :delete_all)
@@ -11,6 +11,6 @@ defmodule PubSubHub.Hub.Repo.Migrations.CreateChannels do
       timestamps()
     end
 
-    create unique_index(:channels, [:url, :user_id])
+    create unique_index(:channels, [:name, :user_id])
   end
 end

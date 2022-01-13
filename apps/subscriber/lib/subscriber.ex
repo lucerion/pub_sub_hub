@@ -14,14 +14,14 @@ defmodule PubSubHub.Subscriber do
   @doc "Subscribes to a channel"
   @spec subscribe(%{
           token: String.t(),
-          channel_url: String.t(),
+          channel_name: String.t(),
           channel_secret: String.t(),
           callback_url: String.t()
         }) :: term
   def subscribe(params), do: call(:subscribe, params)
 
   @doc "Unsubscribes from a channel"
-  @spec unsubscribe(%{token: String.t(), channel_url: String.t()}) :: term
+  @spec unsubscribe(%{token: String.t(), channel_name: String.t()}) :: term
   def unsubscribe(params), do: call(:unsubscribe, params)
 
   @doc "Gets response from Hub"

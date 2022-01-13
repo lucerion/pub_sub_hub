@@ -8,13 +8,13 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
   @doc "Subscribes Subscriber to a channel"
   @spec subscribe(%{
           token: Token.t(),
-          channel_url: String.t(),
+          channel_name: String.t(),
           channel_secret: Secret.t(),
           callback_url: String.t()
         }) :: term
-  def subscribe(%{token: token, channel_url: channel_url, channel_secret: channel_secret}) do
+  def subscribe(%{token: token, channel_name: channel_name, channel_secret: channel_secret}) do
     with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
-         channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}),
+         channel when not is_nil(channel) <- Channels.find_by(%{name: channel_name}),
          true <- Secret.verify(channel, channel_secret) do
       %{user_id: subscriber.id, channel_id: channel.id, callback_url: @subscriber.url}
       |> Subscriptions.create()
@@ -23,10 +23,10 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
   end
 
   @doc "Unsubscribes Subscriber from a channel"
-  @spec unsubscribe(%{token: Token.t(), channel_url: String.t()}) :: term
-  def unsubscribe(%{token: token, channel_url: channel_url}) do
+  @spec unsubscribe(%{token: Token.t(), channel_name: String.t()}) :: term
+  def unsubscribe(%{token: token, channel_name: channel_name}) do
     with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
-         channel when not is_nil(channel) <- Channels.find_by(%{url: channel_url}) do
+         channel when not is_nil(channel) <- Channels.find_by(%{name: channel_name}) do
       %{user_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.find_by()
       |> Subscriptions.delete()
