@@ -1,7 +1,7 @@
 defmodule PubSubHub.Hub.Token do
   @moduledoc "Token functions"
 
-  alias PubSubHub.Hub.Repo
+  alias PubSubHub.Hub.{Users, Users.User, Repo}
 
   @type t :: String.t()
 
@@ -17,11 +17,11 @@ defmodule PubSubHub.Hub.Token do
 
   def generate, do: generate(@default_secret_key_length)
 
-  @spec refresh(struct) :: {:ok, String.t()} | {:error, nil}
-  def refresh(entity) do
-    entity
-    |> entity.__struct__.update_changeset(%{token: generate()})
-    |> Repo.update()
+  @doc "Updates user token"
+  @spec refresh(User.t()) :: {:ok, String.t()} | {:error, nil}
+  def refresh(%User{} = user) do
+    user
+    |> Users.update(%{token: generate()})
     |> extract_token()
   end
 
