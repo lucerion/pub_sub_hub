@@ -21,7 +21,6 @@ defmodule PubSubHub.Hub.Users.User do
         }
 
   @type update_attributes :: %{
-          email: String.t(),
           token: Token.t()
         }
 
@@ -43,15 +42,14 @@ defmodule PubSubHub.Hub.Users.User do
   end
 
   @spec create_changeset(%__MODULE__{}, create_attributes) :: Ecto.Changeset.t()
-  def create_changeset(%__MODULE__{} = subscriber, attributes) do
-    subscriber
+  def create_changeset(%__MODULE__{} = user, attributes) do
+    user
     |> cast(attributes, @create_allowed_attributes)
     |> validate_required(@create_required_attributes)
     |> unique_constraint(:email)
-    |> Secret.hash_secret()
   end
 
   @spec update_changeset(%__MODULE__{}, update_attributes) :: Ecto.Changeset.t()
-  def update_changeset(%__MODULE__{} = subscriber, attributes),
-    do: cast(subscriber, attributes, @update_allowed_attributes)
+  def update_changeset(%__MODULE__{} = user, attributes),
+    do: cast(user, attributes, @update_allowed_attributes)
 end
