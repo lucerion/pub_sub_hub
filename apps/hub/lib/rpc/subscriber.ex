@@ -9,7 +9,7 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
   @spec subscribe(%{
           token: Token.t(),
           channel_name: String.t(),
-          channel_secret: Secret.t(),
+          channel_secret: Secret.t()
         }) :: term
   def subscribe(%{token: token, channel_name: channel_name, channel_secret: channel_secret}) do
     with subscriber when not is_nil(subscriber) <- Users.find_by(%{token: token}),
@@ -17,7 +17,7 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
          true <- Secret.verify(channel, channel_secret) do
       %{user_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.create()
-      |> send_response()
+      |> send_response(subscriber)
     end
   end
 
@@ -29,9 +29,7 @@ defmodule PubSubHub.Hub.RPC.Subscriber do
       %{user_id: subscriber.id, channel_id: channel.id}
       |> Subscriptions.find_by()
       |> Subscriptions.delete()
-      |> send_response()
+      |> send_response(subscriber)
     end
   end
-
-  defp send_response(response), do: send_response(response, @subscriber)
 end
