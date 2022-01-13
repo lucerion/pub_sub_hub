@@ -27,8 +27,7 @@ defmodule PubSubHub.Hub.MixProject do
     [
       {:ecto_sql, "~> 3.3.2"},
       {:postgrex, "~> 0.15.3"},
-      {:bcrypt_elixir, "~> 2.1"},
-      {:httpoison, "~> 1.6.0"}
+      {:bcrypt_elixir, "~> 2.1"}
     ]
   end
 
