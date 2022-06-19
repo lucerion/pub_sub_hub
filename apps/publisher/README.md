@@ -1,3 +1,3 @@
 # Publisher
 
-A service that sends data via channels to the hub
+A service that produces data and sends it via channels to the Hub
